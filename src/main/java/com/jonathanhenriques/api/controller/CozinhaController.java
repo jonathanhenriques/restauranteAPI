@@ -31,7 +31,7 @@ public class CozinhaController {
     @GetMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Cozinha> buscarPorId(@PathVariable Long id) {
-        Cozinha cozinha = cozinhaRepository.buscar(id);
+        Cozinha cozinha = cozinhaRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(id+""));
 //Modificar no postman automatically follow redirects
 //		HttpHeaders headers = new HttpHeaders();
 //		headers.add(HttpHeaders.LOCATION,
@@ -47,7 +47,7 @@ public class CozinhaController {
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Cozinha> listar() {
-        return cozinhaRepository.listar();
+        return cozinhaRepository.findAll();
     }
 
 
@@ -61,11 +61,12 @@ public class CozinhaController {
     @PutMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Cozinha> atualizar(@PathVariable("id") Long id, @RequestBody Cozinha cozinha) {
-        Cozinha cozinhaEncontrada = cozinhaRepository.buscar(id);
+        Cozinha cozinhaEncontrada = cozinhaRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(id+""));
 
         if (cozinhaEncontrada != null) {
-            //classe do spring que faz o mapper de um onj para outro
-            //"id" indica que será ignorado (oiys aqui ele é null)
+            //classe do spring que faz o mapper de um obj para outro
+            //"id" indica que será ignorado (o id aqui ele é null)
+            //copiando os valores de COZINHA para COZINHAENCONTRADA, ignorando o ID
             BeanUtils.copyProperties(cozinha, cozinhaEncontrada, "id");
 
             cozinhaEncontrada = cadastroCozinhaService.salvar(cozinhaEncontrada);

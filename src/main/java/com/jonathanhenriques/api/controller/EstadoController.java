@@ -18,7 +18,7 @@ public class EstadoController {
 	
 	@GetMapping
 	public List<Estado> lista(){
-		return estadoRepository.listar();
+		return estadoRepository.findAll();
 	}
 
 }

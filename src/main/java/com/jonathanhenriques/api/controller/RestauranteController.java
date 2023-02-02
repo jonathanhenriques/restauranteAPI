@@ -1,23 +1,29 @@
 package com.jonathanhenriques.api.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jonathanhenriques.domain.exception.EntidadeEmUsoException;
-import com.jonathanhenriques.domain.exception.EntidadeNaoEncontradaException;
-import com.jonathanhenriques.domain.model.Cozinha;
-import com.jonathanhenriques.domain.model.Restaurante;
-import com.jonathanhenriques.domain.repository.RestauranteRepository;
-import com.jonathanhenriques.domain.service.CadastroRestauranteService;
+import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.ReflectionUtils;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.lang.reflect.Field;
-import java.util.List;
-import java.util.Map;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jonathanhenriques.domain.exception.EntidadeNaoEncontradaException;
+import com.jonathanhenriques.domain.model.Restaurante;
+import com.jonathanhenriques.domain.repository.RestauranteRepository;
+import com.jonathanhenriques.domain.service.CadastroRestauranteService;
 
 
 @RestController
@@ -32,12 +38,12 @@ public class RestauranteController {
 
     @GetMapping
     public List<Restaurante> listar() {
-        return restauranteRepository.listar();
+        return restauranteRepository.findAll();
     }
 
     @GetMapping("/{restauranteId}")
     public ResponseEntity<Restaurante> buscar(@PathVariable Long restauranteId) {
-        Restaurante restaurante = restauranteRepository.buscar(restauranteId);
+        Restaurante restaurante = restauranteRepository.findById(restauranteId).orElseThrow(() -> new EntidadeNaoEncontradaException(restauranteId+""));
 
         if (restaurante != null) {
             return ResponseEntity.ok(restaurante);
@@ -45,6 +51,12 @@ public class RestauranteController {
 
         return ResponseEntity.notFound().build();
     }
+    
+	@GetMapping("/por-nome-e-frete")
+	public List<Restaurante> restaurantesPorNomeFrete(String nome, 
+			BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
+		return restauranteRepository.find(nome, taxaFreteInicial, taxaFreteFinal);
+	}
 
     @PostMapping
     public ResponseEntity<?> adicionar(@RequestBody Restaurante restaurante) {
@@ -63,7 +75,7 @@ public class RestauranteController {
     public ResponseEntity<?> atualizar(@PathVariable Long restauranteId,
                                        @RequestBody Restaurante restaurante) {
         try {
-            Restaurante restauranteAtual = restauranteRepository.buscar(restauranteId);
+            Restaurante restauranteAtual = restauranteRepository.findById(restauranteId).orElseThrow(() -> new EntidadeNaoEncontradaException(restauranteId+""));
 
             if (restauranteAtual != null) {
                 BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
@@ -83,7 +95,7 @@ public class RestauranteController {
     @PatchMapping("/{restauranteId}")
     public ResponseEntity<?> atualizarParcial(@PathVariable Long restauranteId,
                                               @RequestBody Map<String, Object> campos) {
-        Restaurante restauranteAtual = restauranteRepository.buscar(restauranteId);
+        Restaurante restauranteAtual = restauranteRepository.findById(restauranteId).orElseThrow(() -> new EntidadeNaoEncontradaException(restauranteId+""));
 
         if (restauranteAtual == null) {
             return ResponseEntity.notFound().build();
