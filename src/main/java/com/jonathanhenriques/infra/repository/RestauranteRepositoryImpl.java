@@ -13,6 +13,10 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import com.jonathanhenriques.domain.repository.RestauranteRepository;
+import com.jonathanhenriques.infra.specification.RestauranteSpecification;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
@@ -20,6 +24,8 @@ import com.jonathanhenriques.domain.model.Restaurante;
 import com.jonathanhenriques.domain.repository.IRestauranteRepositoryQueries;
 
 /**
+ * Classe de implementacao de RestauranteRepository
+ *
  * Classe criada para fazer a ligação dos métodos de consulta criados
  * "manualmente" usando JPQL ou SQL nativo com a interface RestauranteRepository
  *
@@ -30,6 +36,11 @@ public class RestauranteRepositoryImpl implements IRestauranteRepositoryQueries 
 
 	@PersistenceContext
 	private EntityManager entityManager;
+
+	@Lazy //para resolver problema de referencia circular
+	//injecao do Proprio restauranteRepository para ter acesso aos metodos da JpaREpository
+	@Autowired
+	private RestauranteRepository restauranteRepository;
 
 	/**
 	 * Consulta equivalente a
@@ -105,7 +116,14 @@ public class RestauranteRepositoryImpl implements IRestauranteRepositoryQueries 
 		TypedQuery<Restaurante> query = entityManager.createQuery(criteria);
 		return query.getResultList();
 	}
-	
+
+	@Override
+	public List<Restaurante> fincComFreteGratis(String nome) {
+//		return restauranteRepository.findAll(RestauranteSpecification.comFreteGratis());
+//		return restauranteRepository.findAll(RestauranteSpecification.ComNomeSemelhante(nome));
+		return restauranteRepository.findAll(RestauranteSpecification.comFreteGratis().and(RestauranteSpecification.ComNomeSemelhante(nome)));
+	}
+
 
 	/**
 	 * 

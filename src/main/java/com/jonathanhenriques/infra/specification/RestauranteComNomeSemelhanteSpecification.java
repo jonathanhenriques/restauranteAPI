@@ -9,6 +9,14 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+/**
+ * Classe que representa o
+ * Predicate comNomeSemelhante
+ * para pesquisa na JpaSpecification
+ *
+ * Obrigatorio implementar
+ * o metodo toPredicate()
+ */
 @AllArgsConstructor
 public class RestauranteComNomeSemelhanteSpecification implements Specification<Restaurante> {
 

@@ -3,6 +3,7 @@ package com.jonathanhenriques.api.controller;
 import com.jonathanhenriques.domain.exception.EntidadeEmUsoException;
 import com.jonathanhenriques.domain.exception.EntidadeNaoEncontradaException;
 import com.jonathanhenriques.domain.model.Cozinha;
+import com.jonathanhenriques.domain.model.Restaurante;
 import com.jonathanhenriques.domain.repository.CozinhaRepository;
 import com.jonathanhenriques.domain.service.CadastroCozinhaService;
 import org.springframework.beans.BeanUtils;
@@ -15,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 
 @RestController
@@ -48,6 +50,12 @@ public class CozinhaController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Cozinha> listar() {
         return cozinhaRepository.findAll();
+    }
+
+    @GetMapping("/primeiro")
+    public Optional<Cozinha> CozinhasComFreteGratis( ) {
+        /**Método que vem de CustomJpaRepository */
+        return cozinhaRepository.buscarPrimeiro();
     }
 
 

@@ -6,12 +6,17 @@ import java.util.Optional;
 
 import com.jonathanhenriques.domain.model.Restaurante;
 
+/**
+ * Interface para declarar os
+ * metodos personalizados
+ * que estao no xml(orm.xml) ou specifications
+ *
+ * e nao sao da JpaREpository
+ * mas que sera implementada na interface RestauranteRepository
+ */
 public interface IRestauranteRepositoryQueries {
     List<Restaurante> find(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal);
-//
-//    List<Restaurante> findRestaurantes(String nome);
-//
-//    List<Restaurante> queryByTaxaFreteBetween(BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal);
-//
-//    Optional<Restaurante> consultarPorNome(String nome, Long cozinhaId);
+
+    List<Restaurante> fincComFreteGratis(String nome);
+
 }

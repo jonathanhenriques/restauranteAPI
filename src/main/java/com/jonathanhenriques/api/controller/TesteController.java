@@ -7,6 +7,7 @@ import java.util.Optional;
 
 import com.jonathanhenriques.infra.specification.RestauranteComFreteGratisSpecification;
 import com.jonathanhenriques.infra.specification.RestauranteComNomeSemelhanteSpecification;
+import com.jonathanhenriques.infra.specification.RestauranteSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -41,7 +42,13 @@ public class TesteController {
 	public boolean cozinhaExists(String nome) {
 		return cozinhaRepository.existsByNome(nome);
 	}
-	
+
+	@GetMapping("/cozinhas/primeiro")
+	public Optional<Cozinha> cozinhasComFreteGratis( ) {
+		/**Método que vem de CustomJpaRepository */
+		return cozinhaRepository.buscarPrimeiro();
+	}
+
 	@GetMapping("/restaurantes/por-taxa-frete")
 	public List<Restaurante> restaurantesPorTaxaFrete(
 			BigDecimal taxaInicial, BigDecimal taxaFinal) {
@@ -85,10 +92,18 @@ public class TesteController {
 	 */
 	@GetMapping("/restaurantes/com-frete-gratis")
 	public List<Restaurante> restaurantesComFreteGratis(String nome) {
-		RestauranteComFreteGratisSpecification comFreteGratis = new RestauranteComFreteGratisSpecification();
-		RestauranteComNomeSemelhanteSpecification comNomeSemelhante = new RestauranteComNomeSemelhanteSpecification(nome);
 
-		return restauranteRepository.findAll(comNomeSemelhante.and(comFreteGratis));
+	return restauranteRepository.fincComFreteGratis(nome);
 	}
+
+
+	@GetMapping("/restaurantes/primeiro")
+	public Optional<Restaurante> restaurantesComFreteGratis( ) {
+		/**Método que vem de CustomJpaRepository */
+		return restauranteRepository.buscarPrimeiro();
+	}
+
+
+
 	
 }
