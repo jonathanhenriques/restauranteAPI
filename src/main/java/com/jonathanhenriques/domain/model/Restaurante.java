@@ -75,7 +75,7 @@ public class Restaurante {
     @OneToMany(mappedBy = "restaurante")
     private List<Produto> produtos;
 
-//    @JsonIgnore
+    @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
 /**
  * @JoinTable cria uma nova tabela no relacionamento @ManyToMany

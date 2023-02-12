@@ -21,7 +21,8 @@ public interface RestauranteRepository
         JpaSpecificationExecutor<Restaurante> {
 
     /**@query para definirmos a consulta sql e minimizar as consultas ao banco feitas pelo hibernate (n+1) */
-    @Query("from Restaurante r join r.cozinha left join fetch r.formasPagamento")
+//    @Query("from Restaurante r join r.cozinha left join fetch r.formasPagamento")
+    @Query("from Restaurante r join r.cozinha")
     List<Restaurante> findAll();
 
     List<Restaurante> queryByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);

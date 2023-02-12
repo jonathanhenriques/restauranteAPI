@@ -1,9 +1,13 @@
 package com.jonathanhenriques.infra.repository;
 
-import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import com.jonathanhenriques.domain.model.Restaurante;
+import com.jonathanhenriques.domain.repository.IRestauranteRepositoryQueries;
+import com.jonathanhenriques.domain.repository.RestauranteRepository;
+import com.jonathanhenriques.infra.specification.RestauranteSpecification;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -12,16 +16,9 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
-
-import com.jonathanhenriques.domain.repository.RestauranteRepository;
-import com.jonathanhenriques.infra.specification.RestauranteSpecification;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.stereotype.Repository;
-import org.springframework.util.StringUtils;
-
-import com.jonathanhenriques.domain.model.Restaurante;
-import com.jonathanhenriques.domain.repository.IRestauranteRepositoryQueries;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Classe de implementacao de RestauranteRepository
