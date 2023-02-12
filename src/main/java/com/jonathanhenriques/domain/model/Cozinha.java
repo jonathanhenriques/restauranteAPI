@@ -1,10 +1,13 @@
 package com.jonathanhenriques.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 //import jakarta.persistence.*;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -25,5 +28,9 @@ public class Cozinha {
 //	@JsonProperty(value = "titulo") //muda o nome da propriedade na serializacao
 	@Column(nullable = false)
 	private String nome;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "cozinha") //dono do mapeamento feito do outro lado da associacao
+	private List<Restaurante> restaurantes = new ArrayList<>();
 
 }

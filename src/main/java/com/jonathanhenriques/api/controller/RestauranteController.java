@@ -51,9 +51,9 @@ public class RestauranteController {
 
         return ResponseEntity.notFound().build();
     }
-    
+
 	@GetMapping("/por-nome-e-frete")
-	public List<Restaurante> restaurantesPorNomeFrete(String nome, 
+	public List<Restaurante> restaurantesPorNomeFrete(String nome,
 			BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
 		return restauranteRepository.find(nome, taxaFreteInicial, taxaFreteFinal);
 	}
@@ -75,10 +75,12 @@ public class RestauranteController {
     public ResponseEntity<?> atualizar(@PathVariable Long restauranteId,
                                        @RequestBody Restaurante restaurante) {
         try {
-            Restaurante restauranteAtual = restauranteRepository.findById(restauranteId).orElseThrow(() -> new EntidadeNaoEncontradaException(restauranteId+""));
+            Restaurante restauranteAtual = restauranteRepository.findById(restauranteId)
+                    .orElseThrow(() -> new EntidadeNaoEncontradaException(restauranteId+""));
 
             if (restauranteAtual != null) {
-                BeanUtils.copyProperties(restaurante, restauranteAtual, "id");
+                //passado o que será copiado e para quem e as propriedades a serem ignoradas na copia
+                BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco","dataCadastro");
 
                 restauranteAtual = cadastroRestaurante.salvar(restauranteAtual);
                 return ResponseEntity.ok(restauranteAtual);
