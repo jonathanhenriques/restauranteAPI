@@ -6,13 +6,11 @@ import org.hibernate.annotations.CreationTimestamp;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
-@Setter
-@Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+
+@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Usuario {
@@ -25,20 +23,19 @@ public class Usuario {
     @Column(nullable = false)
     private String nome;
 
-    @Email
+    @Column(nullable = false)
     private String email;
 
+    @Column(nullable = false)
     private String senha;
 
     @CreationTimestamp
+    @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataCadastro;
 
     @ManyToMany
-    @JoinTable(name = "usuario_grupo",
-            joinColumns = @JoinColumn(name = "usuario_id"),
+    @JoinTable(name = "usuario_grupo", joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "grupo_id"))
-    private List<Grupo> grupos;
+    private List<Grupo> grupos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "usuario")
-    private List<Pedido> pedidos;
 }

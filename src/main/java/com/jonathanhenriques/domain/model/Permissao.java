@@ -4,12 +4,8 @@ package com.jonathanhenriques.domain.model;
 import lombok.*;
 import javax.persistence.*;
 
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true) //cria o Equals considerando apenas ID
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Permissao {
 
@@ -17,11 +13,11 @@ public class Permissao {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@Column(nullable = false)
 	private String nome;
-	
+
 	@Column(nullable = false)
 	private String descricao;
-	
+
 }

@@ -5,13 +5,11 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Produto {
+
     @EqualsAndHashCode.Include
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,15 +18,17 @@ public class Produto {
     @Column(nullable = false)
     private String nome;
 
+    @Column(nullable = false)
     private String descricao;
 
     @Column(nullable = false)
     private BigDecimal preco;
 
+    @Column(nullable = false)
     private Boolean ativo;
 
-    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "restaurante_id")
+    @JoinColumn(nullable = false)
     private Restaurante restaurante;
+
 }

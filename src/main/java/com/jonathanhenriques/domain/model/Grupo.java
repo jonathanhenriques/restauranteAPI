@@ -3,14 +3,11 @@ package com.jonathanhenriques.domain.model;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 
-@Getter
-@Setter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
+@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
 public class Grupo {
@@ -24,11 +21,8 @@ public class Grupo {
     private String nome;
 
     @ManyToMany
-    @JoinTable(name = "grupo_permissoes",
-            joinColumns = @JoinColumn(name = "grupo_id"),
+    @JoinTable(name = "grupo_permissao", joinColumns = @JoinColumn(name = "grupo_id"),
             inverseJoinColumns = @JoinColumn(name = "permissao_id"))
-    private List<Permissao> permissoes;
-
-
+    private List<Permissao> permissoes = new ArrayList<>();
 
 }

@@ -9,28 +9,21 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
-@Setter
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
-//@JsonRootName("gastronomia") //muda nome da classe no xml de retorno
 public class Cozinha {
 
 	@EqualsAndHashCode.Include
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
-//	@JsonIgnore
-//	@JsonProperty(value = "titulo") //muda o nome da propriedade na serializacao
+
 	@Column(nullable = false)
 	private String nome;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "cozinha") //dono do mapeamento feito do outro lado da associacao
+	@OneToMany(mappedBy = "cozinha")
 	private List<Restaurante> restaurantes = new ArrayList<>();
 
 }
