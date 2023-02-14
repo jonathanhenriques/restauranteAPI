@@ -7,8 +7,14 @@ import com.jonathanhenriques.domain.repository.CozinhaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
+/**
+ * Classes de dominio como as SERVICES
+ * não deveriam ter contato com status HTTP
+ */
 @Service
 public class CadastroCozinhaService {
 

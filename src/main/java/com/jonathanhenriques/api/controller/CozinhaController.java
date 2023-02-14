@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -83,17 +84,19 @@ public class CozinhaController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 
+    /**
+     * Em caso de SUCESSO
+     * retorna @ResponseStatus(HttpStatus.NO_CONTENT)
+     *
+     * EM caso de ERRO
+     * retorna o status referente ao erro
+     * @param cozinhaId
+     *
+     */
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(path = "/{id}")
-    public ResponseEntity<?> remover(@PathVariable("id") Long id) {
-        try {
-            cadastroCozinhaService.excluir(id);
-            return ResponseEntity.notFound().build();
-
-        } catch (EntidadeEmUsoException e) {
-            return ResponseEntity.status(HttpStatus.CONFLICT).build();
-        } catch (EntidadeNaoEncontradaException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-        }
+    public void remover(@PathVariable("id") Long cozinhaId) {
+          cadastroCozinhaService.excluir(cozinhaId);
     }
 
 }
