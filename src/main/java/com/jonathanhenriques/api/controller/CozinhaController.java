@@ -21,68 +21,50 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/cozinhas")
+@RequestMapping(value = "/cozinhas")
 public class CozinhaController {
 
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
     @Autowired
-    private CadastroCozinhaService cadastroCozinhaService;
+    private CadastroCozinhaService cadastroCozinha;
 
-
-    @GetMapping(path = "/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public Cozinha buscarPorId(@PathVariable Long cozinhaID) {
-        return cadastroCozinhaService.buscarOuFalhar(cozinhaID);
-    }
-
-    @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping
     public List<Cozinha> listar() {
         return cozinhaRepository.findAll();
     }
 
-    @GetMapping("/primeiro")
-    public Optional<Cozinha> CozinhasComFreteGratis( ) {
-        /**Método que vem de CustomJpaRepository */
-        return cozinhaRepository.buscarPrimeiro();
+    @GetMapping("/{cozinhaId}")
+    public Cozinha buscar(@PathVariable Long cozinhaId) {
+        return cadastroCozinha.buscarOuFalhar(cozinhaId);
     }
-
 
     @PostMapping
-    public ResponseEntity<Cozinha> adicionar(@RequestBody Cozinha cozinha) {
-        Cozinha cozinhaSalva = cadastroCozinhaService.salvar(cozinha);
-        return ResponseEntity.status(HttpStatus.CREATED).body(cozinhaSalva);
-
+    @ResponseStatus(HttpStatus.CREATED)
+    public Cozinha adicionar(@RequestBody Cozinha cozinha) {
+        return cadastroCozinha.salvar(cozinha);
     }
 
-    @PutMapping(path = "/{id}",
-            produces = MediaType.APPLICATION_JSON_VALUE)
-    public Cozinha atualizar(@PathVariable("id") Long id, @RequestBody Cozinha cozinha) {
-        Cozinha cozinhaEncontrada = cadastroCozinhaService.buscarOuFalhar(id);
+    @PutMapping("/{cozinhaId}")
+    public Cozinha atualizar(@PathVariable Long cozinhaId,
+                             @RequestBody Cozinha cozinha) {
+        Cozinha cozinhaAtual = cadastroCozinha.buscarOuFalhar(cozinhaId);
 
-            //classe do spring que faz o mapper de um obj para outro
-            //"id" indica que será ignorado (o id aqui ele é null)
-            //copiando os valores de COZINHA para COZINHAENCONTRADA, ignorando o ID
-            BeanUtils.copyProperties(cozinha, cozinhaEncontrada, "id");
 
-            return cadastroCozinhaService.salvar(cozinhaEncontrada);
+        //classe do spring que faz o mapper de um obj para outro
+        //"id" indica que será ignorado (o id aqui ele é null)
+        //copiando os valores de COZINHA para COZINHAENCONTRADA, ignorando o ID
+        BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
 
+        return cadastroCozinha.salvar(cozinhaAtual);
     }
 
-    /**
-     * Em caso de SUCESSO
-     * retorna @ResponseStatus(HttpStatus.NO_CONTENT)
-     *
-     * EM caso de ERRO
-     * retorna o status referente ao erro
-     * @param cozinhaId
-     *
-     */
+    @DeleteMapping("/{cozinhaId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping(path = "/{id}")
-    public void remover(@PathVariable("id") Long cozinhaId) {
-          cadastroCozinhaService.excluir(cozinhaId);
+    public void remover(@PathVariable Long cozinhaId) {
+        cadastroCozinha.excluir(cozinhaId);
     }
 
 }
+
