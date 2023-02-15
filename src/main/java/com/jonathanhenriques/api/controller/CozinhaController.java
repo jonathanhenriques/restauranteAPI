@@ -33,19 +33,8 @@ public class CozinhaController {
 
     @GetMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Cozinha> buscarPorId(@PathVariable Long id) {
-        Cozinha cozinha = cozinhaRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(id+""));
-//Modificar no postman automatically follow redirects
-//		HttpHeaders headers = new HttpHeaders();
-//		headers.add(HttpHeaders.LOCATION,
-//				"http://api.algafood.local:8080/cozinhas"); //exemplo pra entendimento
-//		return ResponseEntity.status(HttpStatus.FOUND)
-//				.headers(headers)
-//				.build();
-        if (cozinha != null) {
-            return ResponseEntity.ok(cozinha);
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    public Cozinha buscarPorId(@PathVariable Long cozinhaID) {
+        return cadastroCozinhaService.buscarOuFalhar(cozinhaID);
     }
 
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
@@ -69,19 +58,16 @@ public class CozinhaController {
 
     @PutMapping(path = "/{id}",
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Cozinha> atualizar(@PathVariable("id") Long id, @RequestBody Cozinha cozinha) {
-        Cozinha cozinhaEncontrada = cozinhaRepository.findById(id).orElseThrow(() -> new EntidadeNaoEncontradaException(id+""));
+    public Cozinha atualizar(@PathVariable("id") Long id, @RequestBody Cozinha cozinha) {
+        Cozinha cozinhaEncontrada = cadastroCozinhaService.buscarOuFalhar(id);
 
-        if (cozinhaEncontrada != null) {
             //classe do spring que faz o mapper de um obj para outro
             //"id" indica que será ignorado (o id aqui ele é null)
             //copiando os valores de COZINHA para COZINHAENCONTRADA, ignorando o ID
             BeanUtils.copyProperties(cozinha, cozinhaEncontrada, "id");
 
-            cozinhaEncontrada = cadastroCozinhaService.salvar(cozinhaEncontrada);
-            return ResponseEntity.ok(cozinhaEncontrada);
-        }
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return cadastroCozinhaService.salvar(cozinhaEncontrada);
+
     }
 
     /**
