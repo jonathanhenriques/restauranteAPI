@@ -1,7 +1,7 @@
 package com.jonathanhenriques.infra.repository;
 
 import com.jonathanhenriques.domain.model.Restaurante;
-import com.jonathanhenriques.domain.repository.IRestauranteRepositoryQueries;
+import com.jonathanhenriques.domain.repository.RestauranteRepositoryQueries;
 import com.jonathanhenriques.domain.repository.RestauranteRepository;
 import com.jonathanhenriques.infra.specification.RestauranteSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ import java.util.List;
  * OBRIGATORIO o uso de RepositoryImpl no nome
  */
 @Repository
-public class RestauranteRepositoryImpl implements IRestauranteRepositoryQueries {
+public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
 
 	@PersistenceContext
 	private EntityManager entityManager;

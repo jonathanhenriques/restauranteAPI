@@ -1,7 +1,6 @@
 package com.jonathanhenriques.domain.repository;
 
 import com.jonathanhenriques.domain.model.Restaurante;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,7 +16,7 @@ public interface RestauranteRepository
         //CustomJpaRepository ja herda JpaRepository
         CustomJpaRepository<Restaurante, Long>,
 //        JpaRepository<Restaurante, Long>,
-        IRestauranteRepositoryQueries,
+        RestauranteRepositoryQueries,
         JpaSpecificationExecutor<Restaurante> {
 
     /**@query para definirmos a consulta sql e minimizar as consultas ao banco feitas pelo hibernate (n+1) */
